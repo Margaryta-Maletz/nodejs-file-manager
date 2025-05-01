@@ -1,0 +1,27 @@
+{
+  "name": "nodejs-file-manager",
+  "version": "1.0.0",
+  "description": "Course program module (for RS School students) Assignment: File Manager",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Margaryta-Maletz/nodejs-file-manager.git"
+  },
+  "keywords": [
+    "nodejs",
+    "filemanager",
+    "Margaryta-Maletz"
+  ],
+  "author": "Marharyta Malets",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Margaryta-Maletz/nodejs-file-manager/issues"
+  },
+  "homepage": "https://github.com/Margaryta-Maletz/nodejs-file-manager#readme"
+}
