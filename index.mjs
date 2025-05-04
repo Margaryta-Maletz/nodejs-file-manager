@@ -3,6 +3,7 @@ import { homedir } from 'os';
 import readline from "readline";
 import parseArgs from './src/cli/args.js';
 import list from './src/fs/list.js';
+import read from './src/streams/read.js';
 
 const args = parseArgs();
 const userName = args.username ?? 'Username';
@@ -24,7 +25,7 @@ const operate = (callback, ...args) => {
   if (args[0]) {
     callback(...args);
   } else {
-    console.log(`Invalid input`);
+    console.error(`Invalid input`);
   }
 }
 
@@ -36,7 +37,7 @@ rl.on('line',async (input) => {
       case 'up': chdir('..'); break;
       case 'cd': operate(chdir, inputArgs[1]); break;
       case 'ls': await list(cwd()); break;
-      case 'cat': break;
+      case 'cat': await operate(read, inputArgs[1]); break;
       case 'add': break;
       case 'mkdir': break;
       case 'rn': break;
@@ -50,7 +51,7 @@ rl.on('line',async (input) => {
       default: console.log(`Invalid input`);
     }
   } catch (error) {
-    console.log(`Operation failed`);
+    console.error(`Operation failed`);
   }
   printCurrentDirName();
 })
