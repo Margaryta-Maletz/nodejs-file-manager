@@ -19,15 +19,39 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
+const operate = (callback, ...args) => {
+  if (args[0]) {
+    callback(...args);
+  } else {
+    console.log(`Invalid input`);
+  }
+}
+
 rl.on('line',(input) => {
+  const inputArgs = input.trim().split(' ');
   try {
-    switch (input.trim()) {
+    switch (inputArgs[0]) {
       case '.exit': rl.close(); break;
+      case 'up': chdir('..'); break;
+      case 'cd': operate(chdir, inputArgs[1]); break;
+      case 'ls': break;
+      case 'cat': break;
+      case 'add': break;
+      case 'mkdir': break;
+      case 'rn': break;
+      case 'cp': break;
+      case 'mv': break;
+      case 'rm': break;
+      case 'os': break;
+      case 'hash': break;
+      case 'compress': break;
+      case 'decompress': break;
       default: console.log(`Invalid input`);
     }
   } catch (error) {
     console.log(`Operation failed`);
   }
+  printCurrentDirName();
 })
 
 rl.on('close', () => {
