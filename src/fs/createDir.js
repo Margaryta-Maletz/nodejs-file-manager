@@ -1,18 +1,18 @@
-import { stat, writeFile } from 'fs/promises';
+import { mkdir, stat } from 'fs/promises';
 
-const create = async (filePath, content = '') => {
-  await stat(filePath)
+const createDir = async (dirPath) => {
+  await stat(dirPath)
     .then(
       () => {
         console.error('Operation failed');
       },
       (error) => {
         if (error.code === 'ENOENT') {
-          writeFile(filePath, content);
+          mkdir(dirPath);
         } else {
           console.error('Operation failed');
-      }
-  });
+        }
+      });
 };
 
-export default create;
+export default createDir;

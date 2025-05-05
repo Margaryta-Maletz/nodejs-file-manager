@@ -5,6 +5,7 @@ import parseArgs from './src/cli/args.js';
 import list from './src/fs/list.js';
 import read from './src/streams/read.js';
 import create from './src/fs/create.js';
+import createDir from './src/fs/createDir.js';
 
 const args = parseArgs();
 const userName = args.username ?? 'Username';
@@ -40,7 +41,7 @@ rl.on('line',async (input) => {
       case 'ls': await list(cwd()); break;
       case 'cat': await operate(read, inputArgs[1]); break;
       case 'add':await operate(create, inputArgs[1]); break;
-      case 'mkdir': break;
+      case 'mkdir': await operate(createDir, inputArgs[1]); break;
       case 'rn': break;
       case 'cp': break;
       case 'mv': break;
