@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import fs from 'fs';
 
-const calculateHash = async (fileName) => {
+const calculateHash = (fileName) => {
   const fileStream = fs.createReadStream(fileName);
 
   const hash = crypto.createHash('sha256');

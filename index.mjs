@@ -14,6 +14,7 @@ import moveFile from './src/streams/moveFile.js';
 import calculateHash from './src/hash/calcHash.js';
 import compress from './src/zip/compress.js';
 import decompress from './src/zip/decompress.js';
+import operationSystem from "./src/os/os.js";
 
 const args = parseArgs();
 const userName = args.username ?? 'Username';
@@ -81,11 +82,11 @@ rl.on('line',async (input) => {
       case 'cp': await operateWithTwoArgs(copyFile, inputArgs[1], inputArgs[2], true); break;
       case 'mv': await operateWithTwoArgs(moveFile, inputArgs[1], inputArgs[2], true); break;
       case 'rm': await operate(remove, inputArgs[1]); break;
-      case 'os': break;
-      case 'hash': await operate(calculateHash, inputArgs[1]); break;
+      case 'os': operate(operationSystem, inputArgs[1]); break;
+      case 'hash': operate(calculateHash, inputArgs[1]); break;
       case 'compress': await operateWithTwoArgs(compress, inputArgs[1], inputArgs[2]); break;
       case 'decompress': await operateWithTwoArgs(decompress, inputArgs[1], inputArgs[2]); break;
-      default: console.log(`Invalid input`);
+      default: console.error(`Invalid input`);
     }
   } catch (error) {
     console.error(`Operation failed`);
