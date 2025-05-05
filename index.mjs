@@ -8,6 +8,7 @@ import read from './src/streams/read.js';
 import create from './src/fs/create.js';
 import createDir from './src/fs/createDir.js';
 import rename from './src/fs/rename.js';
+import copyFile from './src/streams/copyFile.js';
 
 const args = parseArgs();
 const userName = args.username ?? 'Username';
@@ -37,7 +38,14 @@ const operateWithTwoArgs = async (callback, oldPath, newPath, isNewPathExist = f
   if (oldPath && newPath) {
     await stat(oldPath);
 
-    if (!isNewPathExist) {
+    if (isNewPathExist) {
+      await stat(newPath)
+        .catch((error) => {
+          if (error.code === 'ENOENT') {
+            throw Error(error);
+          }
+        });
+    } else {
       await stat(newPath).then(() => {
         throw Error('Operation failed');
       }, (error) => {
@@ -65,7 +73,7 @@ rl.on('line',async (input) => {
       case 'add':await operate(create, inputArgs[1]); break;
       case 'mkdir': await operate(createDir, inputArgs[1]); break;
       case 'rn': await operateWithTwoArgs(rename, inputArgs[1], inputArgs[2]); break;
-      case 'cp': break;
+      case 'cp': await operateWithTwoArgs(copyFile, inputArgs[1], inputArgs[2], true); break;
       case 'mv': break;
       case 'rm': break;
       case 'os': break;
