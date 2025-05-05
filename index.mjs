@@ -9,6 +9,7 @@ import create from './src/fs/create.js';
 import createDir from './src/fs/createDir.js';
 import rename from './src/fs/rename.js';
 import copyFile from './src/streams/copyFile.js';
+import remove from "./src/fs/delete.js";
 
 const args = parseArgs();
 const userName = args.username ?? 'Username';
@@ -75,7 +76,7 @@ rl.on('line',async (input) => {
       case 'rn': await operateWithTwoArgs(rename, inputArgs[1], inputArgs[2]); break;
       case 'cp': await operateWithTwoArgs(copyFile, inputArgs[1], inputArgs[2], true); break;
       case 'mv': break;
-      case 'rm': break;
+      case 'rm': await operate(remove, inputArgs[1]); break;
       case 'os': break;
       case 'hash': break;
       case 'compress': break;
