@@ -1,3 +1,4 @@
+import { stat } from 'fs/promises';
 import { chdir, cwd } from 'node:process';
 import { homedir } from 'os';
 import readline from "readline";
@@ -6,6 +7,7 @@ import list from './src/fs/list.js';
 import read from './src/streams/read.js';
 import create from './src/fs/create.js';
 import createDir from './src/fs/createDir.js';
+import rename from './src/fs/rename.js';
 
 const args = parseArgs();
 const userName = args.username ?? 'Username';
@@ -23,9 +25,29 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-const operate = (callback, ...args) => {
-  if (args[0]) {
-    callback(...args);
+const operate = (callback, arg) => {
+  if (arg) {
+    callback(arg);
+  } else {
+    console.error(`Invalid input`);
+  }
+}
+
+const operateWithTwoArgs = async (callback, oldPath, newPath, isNewPathExist = false) => {
+  if (oldPath && newPath) {
+    await stat(oldPath);
+
+    if (!isNewPathExist) {
+      await stat(newPath).then(() => {
+        throw Error('Operation failed');
+      }, (error) => {
+        if (error.code !== 'ENOENT') {
+          throw Error(error);
+        }
+      });
+    }
+
+    callback(oldPath, newPath);
   } else {
     console.error(`Invalid input`);
   }
@@ -42,7 +64,7 @@ rl.on('line',async (input) => {
       case 'cat': await operate(read, inputArgs[1]); break;
       case 'add':await operate(create, inputArgs[1]); break;
       case 'mkdir': await operate(createDir, inputArgs[1]); break;
-      case 'rn': break;
+      case 'rn': await operateWithTwoArgs(rename, inputArgs[1], inputArgs[2]); break;
       case 'cp': break;
       case 'mv': break;
       case 'rm': break;
