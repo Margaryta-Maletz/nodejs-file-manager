@@ -12,6 +12,8 @@ import copyFile from './src/streams/copyFile.js';
 import remove from './src/fs/delete.js';
 import moveFile from './src/streams/moveFile.js';
 import calculateHash from './src/hash/calcHash.js';
+import compress from './src/zip/compress.js';
+import decompress from './src/zip/decompress.js';
 
 const args = parseArgs();
 const userName = args.username ?? 'Username';
@@ -81,8 +83,8 @@ rl.on('line',async (input) => {
       case 'rm': await operate(remove, inputArgs[1]); break;
       case 'os': break;
       case 'hash': await operate(calculateHash, inputArgs[1]); break;
-      case 'compress': break;
-      case 'decompress': break;
+      case 'compress': await operateWithTwoArgs(compress, inputArgs[1], inputArgs[2]); break;
+      case 'decompress': await operateWithTwoArgs(decompress, inputArgs[1], inputArgs[2]); break;
       default: console.log(`Invalid input`);
     }
   } catch (error) {
